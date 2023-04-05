@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>ONNX Runtime JavaScript examples: Quick Start - Web (using script tag)</title>
+    </header>
+    <body>
+        <h1>Example</h1>
+        <div>
+            <input title= "Image from File" type="file" id="file-in" name="file-in">
+        </div>
+        <h3>Image from file</h3>
+        <div>
+            <img id="original-image" src="#" />
+        </div>
+        <h3>Image from tensor resized</h3>
+        <canvas id="canvasHTMLElementResize"></canvas>
+        <script>
+            var canvasResize = document.getElementById('canvasHTMLElementResize');
+        
+            async function handleImage(img) {
+                // HTML Element --> Tensor + resized
+                const resizedTensor = await ort.Tensor.fromImage(img, options = {resizedWidth: 1280, resizedHeight: 960});
+                // Tensor --> ImageData (resized)
+                const resizeImage = resizedTensor.toImageData();
+            
+                // Presenting the image on dom
+                canvasResize.width = resizeImage.width;
+                canvasResize.height = resizeImage.height;
+                context = canvasResize.getContext('2d');
+                context.putImageData(resizeImage, 0, 0);
+
+                // use an async context to call onnxruntime functions.
+                async function main(resizedTensor) {
+                    try {
+                        // create a new session and load the specific model.
+                        //
+                        // the model in this example contains a single MatMul node
+                        // it has 2 inputs: 'a'(float32, 3x4) and 'b'(float32, 4x3)
+                        // it has 1 output: 'c'(float32, 3x3)
+                        const session = await ort.InferenceSession.create('./md_v5a.0.0.960.1280.onnx');
+
+                        // prepare feeds. use model input names as keys. can have multiple...
+                        const feeds = await {"images": resizedTensor};
+
+                        // feed inputs and run
+                        const results = await session.run(feeds);
+
+                        // read from results
+                        const dataC = results.c.data;
+                        document.write(`data of result tensor 'c': ${dataC}`);
+
+                    } catch (e) {
+                        document.write(`failed to inference ONNX model: ${e}.`);
+                    }
+                }
+
+                // call the main function and pass the resizedTensor as a parameter
+                main(resizedTensor);
+            }
+        
+            function loadImage(fileReader) {
+                var img = document.getElementById("original-image");
+                img.onload = () => handleImage(img);
+                img.src = fileReader.result;
+            }
+        
+            function main() {
+                var img = document.getElementById("original-image");
+                document.getElementById("file-in").onchange = function (evt) {
+                    let target = evt.target || window.event.src, files = target.files;
+                    if (FileReader && files && files.length) {
+                        var fileReader = new FileReader();
+                        fileReader.onload = () => loadImage(fileReader);
+                        fileReader.readAsDataURL(files[0]);
+                    }
+                };
+            }
+        
+            main();
+        
+        </script>
+        <!-- import ONNXRuntime Web from CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    </body>
+</html>
