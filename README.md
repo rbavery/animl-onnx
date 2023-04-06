@@ -2,10 +2,9 @@
 
 In order to create the web runtime version of Megadetector (MDV5a) we need to
 
-1. your local environment, where you will:
-   1. Download the model weights from microsoft/CameraTraps
-   2. Compile the model to ONNX
-   3. Convert to ONNX.js
+1. Download the model weights from microsoft/CameraTraps
+2. Compile the model to ONNX
+3. Convert to ONNX.js
 
 
 ## Download weights and recreate ONNX model file
@@ -47,4 +46,5 @@ this will create md_v5a.0.0.onnx. It will expect a fixed image size input of 960
 
 Resizing is currently not implemented correctly to preserve aspect ratio of images TODO. In the future large images will be scaled down to fit 960x1280 and padded to preserve aspect ratio. Small images will not be scaled up, and will instead be padded to preserve aspect ratio and not change resolution.
 
-
+# Test
+You can open index.html and select the sample image in input/

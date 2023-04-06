@@ -1,2 +1,11 @@
 md_v5a.0.0.*
 yolov5s.pt
+input/cameratrap-test-images/
+input/coolpics/
+input/md-rodent-false-negatives/
+input/nontypical_imgs/
+input/sample-img-empty.jpg
+input/sample-img-fox-2.jpg
+input/sample-img-rodent.jpg
+input/sample-img-skunk-large.jpg
+input/sample-img.jpg

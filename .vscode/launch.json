@@ -6,11 +6,9 @@
     "configurations": [
         {
             "type": "chrome",
+            "name": "animl-onnx",
             "request": "launch",
-            "name": "Open index.html",
-            "url": "htt[://localhost:5500",
-            "webRoot": "${workspaceFolder}",
-            "file": "/home/rave/animl-onnxjs/index.html"
+            "url": "http://127.0.0.1:5500/index.html"
         }
     ]
 }
