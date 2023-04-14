@@ -50,3 +50,8 @@ Resizing is currently not implemented correctly to preserve aspect ratio of imag
 
 # Test
 You can open index.html and select the sample image in input/
+
+to debug with vscode, use the provided launch.json, start a web server in another process, and set breakpoints in index.html
+
+
+`python3 -m http.server 8080`
