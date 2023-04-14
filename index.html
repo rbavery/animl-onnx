@@ -37,7 +37,7 @@
                     try {
                         // create a new session and load the specific model.
                         // https://github.com/microsoft/onnxruntime-inference-examples/tree/main/js/api-usage_session-options
-                        const sessionOption = { executionProviders: ['cpu'] };
+                        const sessionOption = { executionProviders: ['wasm', 'cpu'], graphOptimizationLevel: 'all'  };
                         const session = await ort.InferenceSession.create('./md_v5a.0.0.960.1280.onnx', sessionOption);
 
                         // prepare feeds. use model input names as keys. can have multiple...
@@ -48,7 +48,7 @@
                         const results = await session.run(feeds);
 
                         // read from results
-                        const dataC = results.c.data;
+                        const dataC = results.output.data;
                         document.write(`data of result tensor 'c': ${dataC}`);
 
                     } catch (e) {
